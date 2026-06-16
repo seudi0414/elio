@@ -1,12 +1,4 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>🔆3040 엘리오클랜🔆</title>
-
-<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -30,9 +22,39 @@
             min-height: 100vh;
             padding: 20px;
             background-image: radial-gradient(circle at center, #ffffff 0%, #f4f0e6 100%);
+            overflow-x: hidden;
         }
 
-        /* 메인 컨테이너 */
+        /* 🎬 초강력 인트로 화면 스타일 */
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000000; /* 로고가 돋보이도록 암전 배경 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999; /* 최상단에 띄움 */
+            transition: opacity 1s ease, visibility 1s ease; /* 부드러운 페이드 아웃 효과 */
+        }
+
+        #intro-overlay img {
+            max-width: 90%;
+            max-height: 85vh;
+            object-fit: contain;
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+        }
+
+        /* 페이드아웃 애니메이션 클래스 */
+        #intro-overlay.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* 메인 컨테이너 (인트로 후 나타남) */
         .container {
             width: 100%;
             max-width: 550px;
@@ -42,6 +64,15 @@
             padding: 45px 35px;
             box-shadow: 0 20px 40px rgba(212, 175, 55, 0.08), 0 0 25px rgba(238, 197, 90, 0.15);
             position: relative;
+            opacity: 0; /* 처음엔 숨겨둠 */
+            transform: translateY(20px);
+            transition: opacity 1s ease 0.5s, transform 1s ease 0.5s; /* 인트로 페이드아웃 타이밍에 맞춰 부드럽게 등장 */
+        }
+
+        /* 인트로가 끝나면 컨테이너 등장하게 만드는 클래스 */
+        .container.show {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* 헤더 영역 */
@@ -236,7 +267,13 @@
 </head>
 <body>
 
-<div class="container">
+<!-- 🎬 1. 인트로 오프닝 레이어 영역 -->
+<div id="intro-overlay">
+    <!-- 같은 폴더에 둔 엘리오 로고 이미지 매핑 -->
+    <img src="elio.gif" alt="ELIO CLAN INTRO">
+</div>
+
+<div class="container" id="mainContainer">
     <div class="header">
         <h1>ELIO CLAN</h1>
         <p>엘리오 클랜 가입 신청서</p>
@@ -290,7 +327,7 @@
         <!-- STEP 2: 인게임 플레이 스타일 -->
         <div class="form-step">
             <div class="input-group">
-                <label>주총(활,샷건 가입불가)</label>
+                <label>주총 (활,샷건 가입불가)</label>
                 <select id="mainweapon" required>
                     <option value="" disabled selected>선택해주세요</option>
                     <option value="스나">스나</option>
@@ -310,20 +347,20 @@
             </div>
         </div>
 
-        <!-- STEP 3: 소통 및 클랜 내 인맥 -->
+        <!-- STEP 3: 소통 및 클랜 인맥 구도 -->
         <div class="form-step">
             <div class="input-group">
                 <label>디스코드 가능 여부</label>
                 <select id="mic" required>
                     <option value="" disabled selected>선택해주세요</option>
-                    <option value="듣기/말하기 모두 가능">듣기 / 말하기 모두 가능</option>
+                    <option value="듣기/말하기 모두 가능">듣기/말하기 모두 가능</option>
                     <option value="듣기만 가능(가입불가)">듣기만 가능(가입불가)</option>
                 </select>
             </div>
 
             <div class="input-group">
                 <label>클랜 내 인맥 여부 (없을 시 '무' 기재)</label>
-                <input type="text" id="connection" placeholder="아는 클랜원의 닉네임을 적어주세요." required>
+                <input type="text" id="connection" placeholder="아는 클랜원의 닉네임을 적어주세요. 없으면 '무'" required>
             </div>
 
             <div class="btn-container">
@@ -367,6 +404,18 @@
 </div>
 
 <script>
+    // 🎬 2. 인트로 타이머 구동 스크립트
+    window.addEventListener('DOMContentLoaded', () => {
+        const intro = document.getElementById('intro-overlay');
+        const container = document.getElementById('mainContainer');
+
+        // 3초(3000ms) 동안 멋진 로고를 보여준 뒤 페이드 아웃 실행
+        setTimeout(() => {
+            intro.classList.add('fade-out');
+            container.classList.add('show');
+        }, 3000);
+    });
+
     const formSteps = document.querySelectorAll(".form-step");
     const stepDots = document.querySelectorAll(".step-dot");
     const progressBar = document.getElementById("progress");
@@ -400,10 +449,9 @@
     function sendToDiscord(event) {
         event.preventDefault();
 
-        // ⚠️ [필수] 여기에 디스코드 채널 웹훅 주소를 꼭 다시 넣어주세요! ⚠️
+        // ⚠️ 여기에 복사한 디스코드 웹훅 주소를 넣어주세요! ⚠️
         const webhookUrl = "https://discord.com/api/webhooks/1516303098421710921/bpqvQewa-kLt61OTlixvR0ECLHuMlZVWp4Kcy0IaI62rBtoUJMmMy36p0sbmy8MFaKaL";
 
-        // 데이터 수집
         const username = document.getElementById("username").value;
         const userage = document.getElementById("userage").value;
         const usergender = document.getElementById("usergender").value;
@@ -415,7 +463,6 @@
         const barracks_link = document.getElementById("barracks_link").value;
         const final_message = document.getElementById("final_message").value;
 
-        // 디스코드 가독성 패키징 (Embed 카드 양식)
         const requestData = {
             username: "ELIO 신청 알리미",
             embeds: [{
@@ -455,6 +502,3 @@
 </script>
 </body>
 </html>
-
-
-
