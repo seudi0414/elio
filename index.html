@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ELIO CLAN - 공식 가입 신청서</title>
+
+    <!-- 카카오톡 미리보기 (오픈 그래프) 설정 -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://seudi0414.github.io/elio/"> 
+    <meta property="og:title" content="👑 ELIO CLAN - 공식 가입 신청서"> 
+    <meta property="og:description" content="늘 즐거운, 엘리오 클랜의 일원이 되어주세요."> 
+    <meta property="og:image" content="eliohf.jpg"> 
+
     <style>
         /* 기본 스타일 리셋 */
         * {
@@ -27,7 +33,7 @@
             overflow-x: hidden;
         }
 
-        /* 🎬 초강력 인트로 화면 스타일 */
+        /* 🎬 인트로 화면 스타일 */
         #intro-overlay {
             position: fixed;
             top: 0;
@@ -39,7 +45,7 @@
             justify-content: center;
             align-items: center;
             z-index: 9999; 
-            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.2s ease; /* 조금 더 부드러운 전환 */
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.2s ease;
         }
 
         #intro-overlay img {
@@ -50,7 +56,6 @@
             border-radius: 12px;
         }
 
-        /* ⏭️ 인트로 스킵 버튼 스타일 */
         .skip-btn {
             position: absolute;
             bottom: 30px;
@@ -74,11 +79,10 @@
             box-shadow: 0 0 15px rgba(198, 148, 43, 0.5);
         }
 
-        /* 페이드아웃 애니메이션 클래스 */
         #intro-overlay.fade-out {
             opacity: 0;
             visibility: hidden;
-            pointer-events: none; /* 클릭 방해 금지 */
+            pointer-events: none;
         }
 
         /* 메인 컨테이너 */
@@ -96,7 +100,6 @@
             transition: opacity 1.2s ease 0.3s, transform 1.2s ease 0.3s;
         }
 
-        /* 인트로가 끝나면 컨테이너 등장 */
         .container.show {
             opacity: 1;
             transform: translateY(0);
@@ -127,7 +130,7 @@
             margin-top: 6px;
         }
 
-        /* 5단계 프로그레스 바 */
+        /* 6단계 프로그레스 바 */
         .progress-container {
             display: flex;
             justify-content: space-between;
@@ -160,15 +163,15 @@
         }
 
         .step-dot {
-            width: 34px;
-            height: 34px;
+            width: 32px;
+            height: 32px;
             background: #ffffff;
             border: 2px solid #eae3d2;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
             color: #bfa365;
             z-index: 2;
@@ -252,14 +255,14 @@
             transition: all 0.3s ease;
         }
 
-        .btn-next, .btn-submit {
+        .btn-next, .btn-submit, .btn-discord {
             background: linear-gradient(135deg, #f1cc64 0%, #c6942b 50%, #b2801b 100%);
             color: #ffffff;
             text-shadow: 0 1px 2px rgba(0,0,0,0.2);
             box-shadow: 0 4px 12px rgba(198, 148, 43, 0.25);
         }
 
-        .btn-next:hover, .btn-submit:hover {
+        .btn-next:hover, .btn-submit:hover, .btn-discord:hover {
             background: linear-gradient(135deg, #fddb7d 0%, #d6a234 50%, #c6942b 100%);
             box-shadow: 0 6px 18px rgba(198, 148, 43, 0.4);
             transform: translateY(-1px);
@@ -276,6 +279,22 @@
             color: #5c5033;
         }
 
+        /* 디스코드 전용 스타일 */
+        .btn-discord {
+            background: linear-gradient(135deg, #5865F2 0%, #4752C4 100%) !important;
+            color: white !important;
+            text-decoration: none;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(88, 101, 242, 0.3) !important;
+        }
+        .btn-discord:hover {
+            background: linear-gradient(135deg, #6A77F5 0%, #505DD6 100%) !important;
+            box-shadow: 0 6px 18px rgba(88, 101, 242, 0.5) !important;
+        }
+
         .notice-box {
             background: #faf7f0;
             border-left: 4px solid #c6942b;
@@ -290,14 +309,30 @@
         .notice-box strong {
             color: #c6942b;
         }
+
+        /* 축하 메시지 상자 */
+        .success-box {
+            text-align: center;
+            padding: 20px 0;
+        }
+        .success-box h2 {
+            color: #c6942b;
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+        .success-box p {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
     </style>
 </head>
 <body>
 
-<!-- 🎬 1. 인트로 오프닝 레이어 영역 (elio.gif 재생) -->
+<!-- 🎬 1. 인트로 오프닝 레이어 영역 -->
 <div id="intro-overlay">
-    <img src="elio.gif" alt="ELIO CLAN INTRO">
-    <!-- 유저가 직접 넘길 수 있는 버튼 배치 -->
+    <img src="elio_2.jpg" alt="ELIO CLAN INTRO">
     <button class="skip-btn" onclick="skipIntro()">신청서 작성하기 ⏭️</button>
 </div>
 
@@ -307,7 +342,7 @@
         <p>엘리오 클랜 가입 신청서</p>
     </div>
 
-    <!-- 5단계 상태 바 -->
+    <!-- 6단계 상태 바 (디스코드 안내용 6번째 점 추가) -->
     <div class="progress-container">
         <div class="progress-bar" id="progress"></div>
         <div class="step-dot active">1</div>
@@ -315,6 +350,7 @@
         <div class="step-dot">3</div>
         <div class="step-dot">4</div>
         <div class="step-dot">5</div>
+        <div class="step-dot">6</div>
     </div>
 
     <form id="applicationForm" onsubmit="sendToDiscord(event)">
@@ -323,7 +359,7 @@
         <div class="form-step active">
             <div class="notice-box">
                 <strong>[ELIO 클랜 가입 안내]</strong><br>
-                반짝이는 황금빛 여정, 엘리오 클랜의 일원이 되어주세요.<br>
+                늘 즐거운, 엘리오 클랜의 일원이 되어주세요.<br>
                 허위 정보를 작성할 경우 가입이 취소될 수 있습니다.
             </div>
             
@@ -415,7 +451,7 @@
             </div>
         </div>
 
-        <!-- STEP 5: 최종 한마디 -->
+        <!-- STEP 5: 최종 한마디 및 제출 -->
         <div class="form-step">
             <div class="input-group">
                 <label>가입 전 하고 싶은 말</label>
@@ -424,7 +460,25 @@
 
             <div class="btn-container">
                 <button type="button" class="btn btn-prev" onclick="prevStep(3)">이전 단계</button>
-                <button type="submit" class="btn btn-submit">최종 제출</button>
+                <button type="submit" class="btn btn-submit">최종 제출 및<br>디스코드 입장</ㅠㄱ></button>
+            </div>
+        </div>
+
+        <!-- STEP 6: 🎉 대망의 디스코드 채널 초대창 (제출 성공 시 등장) -->
+        <div class="form-step">
+            <div class="success-box">
+                <h2>👑 가입 신청 완료!</h2>
+                <p>
+                    엘리오 클랜 가입 신청서가 성공적으로 발송되었습니다.<br>
+                    원활한 승인 가입 심사를 위해 아래 버튼을 눌러<br>
+                    <strong>ELIO 공식 디스코드 채널</strong>에 꼭 입장해 주세요!
+                </p>
+                <div class="btn-container">
+                    <a href="https://discord.gg/여기서_클랜_초대링크_수정" id="discordLink" class="btn btn-discord" target="_blank">
+                        <svg width="20" height="20" viewBox="0 0 127.14 96.36" fill="currentColor"><path d="M107.7,8.07A105.15,105.15,0,0,0,77.26,0a77.19,77.19,0,0,0-3.3,6.83A96.67,96.67,0,0,0,53.22,6.83,77.19,77.19,0,0,0,49.88,0,105.15,105.15,0,0,0,19.44,8.07C3.66,31.58-1.86,54.65,1,77.53A105.73,105.73,0,0,0,32,96.36a74.37,74.37,0,0,0,6.83-11.12,68.43,68.43,0,0,1-10.75-5.13c.91-.66,1.8-1.34,2.65-2a75.58,75.58,0,0,0,72.7,0c.85.69,1.74,1.37,2.65,2a68.44,68.44,0,0,1-10.75,5.13,74.63,74.63,0,0,0,6.83,11.12,105.73,105.73,0,0,0,31.06-18.83C129.5,49.7,123.38,26.85,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53S36.18,40.36,42.45,40.36,53.88,46,53.88,53,48.72,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.24,60,73.24,53S78.41,40.36,84.69,40.36,96.12,46,96.12,53,91,65.69,84.69,65.69Z"/></svg>
+                        ELIO 공식 디스코드 입장하기
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -434,21 +488,16 @@
 <script>
     let introTimer;
 
-    // 🎬 인트로 강제 종료 함수 (스킵 버튼 클릭 시 및 타이머 완료 시 공통 사용)
     function skipIntro() {
-        // 중복 실행 방지를 위해 기존 대기 타이머 제거
         clearTimeout(introTimer);
-        
         const intro = document.getElementById('intro-overlay');
         const container = document.getElementById('mainContainer');
-        
         intro.classList.add('fade-out');
         container.classList.add('show');
     }
 
-    // 웹페이지 로드 시 구동 타이머 (유지 시간을 6초로 대폭 증가)
     window.addEventListener('DOMContentLoaded', () => {
-        introTimer = setTimeout(skipIntro, 5500); 
+        introTimer = setTimeout(skipIntro, 6000); 
     });
 
     const formSteps = document.querySelectorAll(".form-step");
@@ -484,8 +533,12 @@
     function sendToDiscord(event) {
         event.preventDefault();
 
-        // ⚠️ 여기에 복사한 디스코드 웹훅 주소를 넣어주세요! ⚠️
+        // ⚠️ [필수] 디스코드 웹훅 주소를 입력해 주세요!
         const webhookUrl = "https://discord.com/api/webhooks/1516303098421710921/bpqvQewa-kLt61OTlixvR0ECLHuMlZVWp4Kcy0IaI62rBtoUJMmMy36p0sbmy8MFaKaL";
+
+        // ⚠️ [필수] 클랜의 실제 디스코드 서버 초대 링크 주소를 여기에 입력해 주세요!
+        const discordInviteUrl = "https://discord.gg/aZtnXqe9Qc";
+        document.getElementById("discordLink").href = discordInviteUrl;
 
         const username = document.getElementById("username").value;
         const userage = document.getElementById("userage").value;
@@ -523,8 +576,12 @@
         })
         .then(response => {
             if (response.ok) {
-                alert("엘리오 클랜 신청서가 성공적으로 전송되었습니다!\n운영진이 확인 후 빠르게 연락드리겠습니다.");
-                location.reload();
+                // 제출 성공 시 알림창을 띄우고 디스코드가 연동된 6번째 단계로 자연스럽게 이동시킵니다.
+                alert("신청서가 운영진에게 전송되었습니다!\n마지막 단계에서 디스코드 채널에 입장해 주세요.");
+                
+                formSteps[4].classList.remove("active"); // 5페이지 닫기
+                formSteps[5].classList.add("active");    // 6페이지 열기
+                updateProgress(5);                       // 상태 바 끝까지 채우기
             } else {
                 alert("웹훅 주소 설정 오류 또는 디스코드 서버 전송 실패가 발생했습니다.");
             }
