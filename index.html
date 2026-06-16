@@ -32,12 +32,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #000000; /* 로고가 돋보이도록 암전 배경 */
+            background-color: #000000; 
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 9999; /* 최상단에 띄움 */
-            transition: opacity 1s ease, visibility 1s ease; /* 부드러운 페이드 아웃 효과 */
+            z-index: 9999; 
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.2s ease; /* 조금 더 부드러운 전환 */
         }
 
         #intro-overlay img {
@@ -48,13 +48,38 @@
             border-radius: 12px;
         }
 
+        /* ⏭️ 인트로 스킵 버튼 스타일 */
+        .skip-btn {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(212, 175, 55, 0.15);
+            color: #f1cc64;
+            border: 1px solid #c6942b;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .skip-btn:hover {
+            background: linear-gradient(135deg, #f1cc64 0%, #c6942b 100%);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(198, 148, 43, 0.5);
+        }
+
         /* 페이드아웃 애니메이션 클래스 */
         #intro-overlay.fade-out {
             opacity: 0;
             visibility: hidden;
+            pointer-events: none; /* 클릭 방해 금지 */
         }
 
-        /* 메인 컨테이너 (인트로 후 나타남) */
+        /* 메인 컨테이너 */
         .container {
             width: 100%;
             max-width: 550px;
@@ -64,12 +89,12 @@
             padding: 45px 35px;
             box-shadow: 0 20px 40px rgba(212, 175, 55, 0.08), 0 0 25px rgba(238, 197, 90, 0.15);
             position: relative;
-            opacity: 0; /* 처음엔 숨겨둠 */
+            opacity: 0; 
             transform: translateY(20px);
-            transition: opacity 1s ease 0.5s, transform 1s ease 0.5s; /* 인트로 페이드아웃 타이밍에 맞춰 부드럽게 등장 */
+            transition: opacity 1.2s ease 0.3s, transform 1.2s ease 0.3s;
         }
 
-        /* 인트로가 끝나면 컨테이너 등장하게 만드는 클래스 */
+        /* 인트로가 끝나면 컨테이너 등장 */
         .container.show {
             opacity: 1;
             transform: translateY(0);
@@ -267,10 +292,11 @@
 </head>
 <body>
 
-<!-- 🎬 1. 인트로 오프닝 레이어 영역 -->
+<!-- 🎬 1. 인트로 오프닝 레이어 영역 (elio_2.jpg 재생) -->
 <div id="intro-overlay">
-    <!-- 같은 폴더에 둔 엘리오 로고 이미지 매핑 -->
-    <img src="elio.gif" alt="ELIO CLAN INTRO">
+    <img src="elio_2.jpg" alt="ELIO CLAN INTRO">
+    <!-- 유저가 직접 넘길 수 있는 버튼 배치 -->
+    <button class="skip-btn" onclick="skipIntro()">신청서 작성하기 ⏭️</button>
 </div>
 
 <div class="container" id="mainContainer">
@@ -295,7 +321,7 @@
         <div class="form-step active">
             <div class="notice-box">
                 <strong>[ELIO 클랜 가입 안내]</strong><br>
-                늘 즐거운 엘리오 클랜의 일원이 되어주세요.<br>
+                반짝이는 황금빛 여정, 엘리오 클랜의 일원이 되어주세요.<br>
                 허위 정보를 작성할 경우 가입이 취소될 수 있습니다.
             </div>
             
@@ -353,7 +379,7 @@
                 <label>디스코드 가능 여부</label>
                 <select id="mic" required>
                     <option value="" disabled selected>선택해주세요</option>
-                    <option value="듣기/말하기 모두 가능">듣기/말하기 모두 가능</option>
+                    <option value="듣기/말하기 모두 가능">듣기 / 말하기 모두 가능</option>
                     <option value="듣기만 가능(가입불가)">듣기만 가능(가입불가)</option>
                 </select>
             </div>
@@ -404,16 +430,23 @@
 </div>
 
 <script>
-    // 🎬 2. 인트로 타이머 구동 스크립트
-    window.addEventListener('DOMContentLoaded', () => {
+    let introTimer;
+
+    // 🎬 인트로 강제 종료 함수 (스킵 버튼 클릭 시 및 타이머 완료 시 공통 사용)
+    function skipIntro() {
+        // 중복 실행 방지를 위해 기존 대기 타이머 제거
+        clearTimeout(introTimer);
+        
         const intro = document.getElementById('intro-overlay');
         const container = document.getElementById('mainContainer');
+        
+        intro.classList.add('fade-out');
+        container.classList.add('show');
+    }
 
-        // 3초(3000ms) 동안 멋진 로고를 보여준 뒤 페이드 아웃 실행
-        setTimeout(() => {
-            intro.classList.add('fade-out');
-            container.classList.add('show');
-        }, 3000);
+    // 웹페이지 로드 시 구동 타이머 (유지 시간을 5초로 대폭 증가)
+    window.addEventListener('DOMContentLoaded', () => {
+        introTimer = setTimeout(skipIntro, 5000); 
     });
 
     const formSteps = document.querySelectorAll(".form-step");
