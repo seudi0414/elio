@@ -7,10 +7,10 @@
 
     <!-- 카카오톡 미리보기 (오픈 그래프) 설정 -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://seudi0414.github.io/elio/"> 
+    <meta property="og:url" content="https://내-깃허브-주소.github.io/"> 
     <meta property="og:title" content="👑 ELIO CLAN - 공식 가입 신청서"> 
     <meta property="og:description" content="늘 즐거운, 엘리오 클랜의 일원이 되어주세요."> 
-    <meta property="og:image" content="eliohf.jpg"> 
+    <meta property="og:image" content="elio.gif"> 
 
     <style>
         /* 기본 스타일 리셋 */
@@ -60,23 +60,24 @@
             position: absolute;
             bottom: 30px;
             right: 30px;
-            background: rgba(212, 175, 55, 0.15);
-            color: #f1cc64;
-            border: 1px solid #c6942b;
-            padding: 10px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 13px;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-        }
-
-        .skip-btn:hover {
             background: linear-gradient(135deg, #f1cc64 0%, #c6942b 100%);
             color: #fff;
-            box-shadow: 0 0 15px rgba(198, 148, 43, 0.5);
+            border: none;
+            padding: 12px 26px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: 1px;
+            box-shadow: 0 0 20px rgba(198, 148, 43, 0.6);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite; /* 버튼 눈에 띄게 깜빡이는 효과 */
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 20px rgba(198, 148, 43, 0.6); }
+            50% { transform: scale(1.05); box-shadow: 0 0 35px rgba(198, 148, 43, 0.9); }
+            100% { transform: scale(1); box-shadow: 0 0 20px rgba(198, 148, 43, 0.6); }
         }
 
         #intro-overlay.fade-out {
@@ -310,7 +311,6 @@
             color: #c6942b;
         }
 
-        /* 축하 메시지 상자 */
         .success-box {
             text-align: center;
             padding: 20px 0;
@@ -330,10 +330,14 @@
 </head>
 <body>
 
+<!-- 🎵 오디오 재생 태그 (반복 재생 설정) -->
+<audio id="bgm" src="bgm.mp3" loop></audio>
+
 <!-- 🎬 1. 인트로 오프닝 레이어 영역 -->
 <div id="intro-overlay">
-    <img src="elio.gif" alt="ELIO CLAN INTRO">
-    <button class="skip-btn" onclick="skipIntro()">신청서 작성하기 ⏭️</button>
+    <img src="elio_2.jpg" alt="ELIO CLAN INTRO">
+    <!-- 음악 시작을 위한 강렬한 입장 버튼 디자인 변경 -->
+    <button class="skip-btn" onclick="skipIntro()">클랜 신청하기 SOUND ON 🔊</button>
 </div>
 
 <div class="container" id="mainContainer">
@@ -342,7 +346,7 @@
         <p>엘리오 클랜 가입 신청서</p>
     </div>
 
-    <!-- 6단계 상태 바 (디스코드 안내용 6번째 점 추가) -->
+    <!-- 6단계 상태 바 -->
     <div class="progress-container">
         <div class="progress-bar" id="progress"></div>
         <div class="step-dot active">1</div>
@@ -364,7 +368,7 @@
             </div>
             
             <div class="input-group">
-                <label>서든 닉네임</label>
+                <label>클랜 닉네임</label>
                 <input type="text" id="username" placeholder="서든어택 닉네임을 적어주세요." required>
             </div>
 
@@ -391,7 +395,7 @@
         <!-- STEP 2: 인게임 플레이 스타일 -->
         <div class="form-step">
             <div class="input-group">
-                <label>주총 (활,샷건 가입불가)</label>
+                <label>주총 (활,샷건 불가)</label>
                 <select id="mainweapon" required>
                     <option value="" disabled selected>선택해주세요</option>
                     <option value="스나">스나</option>
@@ -455,16 +459,16 @@
         <div class="form-step">
             <div class="input-group">
                 <label>가입 전 하고 싶은 말</label>
-                <textarea id="final_message" placeholder="엘리오 클랜에 전하고 싶은 말을 자유롭게 남겨주세요." required></textarea>
+                <textarea id="final_message" placeholder="엘리오 클랜에 전하고 싶은 각오나 질문을 자유롭게 남겨주세요." required></textarea>
             </div>
 
             <div class="btn-container">
                 <button type="button" class="btn btn-prev" onclick="prevStep(3)">이전 단계</button>
-                <button type="submit" class="btn btn-submit">최종 제출 및<br>디스코드 입장</ㅠㄱ></button>
+                <button type="submit" class="btn btn-submit">최종 제출 및<br>디스코드 입장</button>
             </div>
         </div>
 
-        <!-- STEP 6: 🎉 대망의 디스코드 채널 초대창 (제출 성공 시 등장) -->
+        <!-- STEP 6: 🎉 디스코드 채널 초대창 -->
         <div class="form-step">
             <div class="success-box">
                 <h2>👑 가입 신청 완료!</h2>
@@ -487,17 +491,30 @@
 
 <script>
     let introTimer;
+    let isIntroCleared = false;
 
+    // 🎬 인트로 종료 및 음악 강제 재생 함수
     function skipIntro() {
+        if (isIntroCleared) return;
+        isIntroCleared = true;
+        
         clearTimeout(introTimer);
+        
+        // 🎵 유저 클릭 상호작용이 일어났으므로 음악 재생 시작
+        const bgm = document.getElementById('bgm');
+        bgm.play().catch(error => {
+            console.log("브라우저 자동재생 차단 정책으로 인해 재생이 차단되었습니다. 유저 액션이 더 필요합니다.", error);
+        });
+
         const intro = document.getElementById('intro-overlay');
         const container = document.getElementById('mainContainer');
         intro.classList.add('fade-out');
         container.classList.add('show');
     }
 
+    // 시간 초과 시에도 자동으로 넘어가도록 설정 (음악은 브라우저 정책상 오토플레이가 막힐 수 있어 가급적 클릭 유도)
     window.addEventListener('DOMContentLoaded', () => {
-        introTimer = setTimeout(skipIntro, 6000); 
+        introTimer = setTimeout(skipIntro, 7000); 
     });
 
     const formSteps = document.querySelectorAll(".form-step");
@@ -533,11 +550,8 @@
     function sendToDiscord(event) {
         event.preventDefault();
 
-        // ⚠️ [필수] 디스코드 웹훅 주소를 입력해 주세요!
-        const webhookUrl = "https://discord.com/api/webhooks/1516303098421710921/bpqvQewa-kLt61OTlixvR0ECLHuMlZVWp4Kcy0IaI62rBtoUJMmMy36p0sbmy8MFaKaL";
-
-        // ⚠️ [필수] 클랜의 실제 디스코드 서버 초대 링크 주소를 여기에 입력해 주세요!
-        const discordInviteUrl = "https://discord.gg/aZtnXqe9Qc";
+        const webhookUrl = "https://discord.com/api/webhooks/...";
+        const discordInviteUrl = "https://discord.gg/여기서_클랜_초대링크_수정";
         document.getElementById("discordLink").href = discordInviteUrl;
 
         const username = document.getElementById("username").value;
@@ -576,12 +590,10 @@
         })
         .then(response => {
             if (response.ok) {
-                // 제출 성공 시 알림창을 띄우고 디스코드가 연동된 6번째 단계로 자연스럽게 이동시킵니다.
                 alert("신청서가 운영진에게 전송되었습니다!\n마지막 단계에서 디스코드 채널에 입장해 주세요.");
-                
-                formSteps[4].classList.remove("active"); // 5페이지 닫기
-                formSteps[5].classList.add("active");    // 6페이지 열기
-                updateProgress(5);                       // 상태 바 끝까지 채우기
+                formSteps[4].classList.remove("active");
+                formSteps[5].classList.add("active");
+                updateProgress(5);
             } else {
                 alert("웹훅 주소 설정 오류 또는 디스코드 서버 전송 실패가 발생했습니다.");
             }
