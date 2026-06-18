@@ -584,34 +584,12 @@
         introTimer = setTimeout(skipIntro, 7000);
     }
 
-  
-  // 🎬 인트로 종료 및 음악 페이드아웃(메인 볼륨으로 조정) 함수
+    // 🎬 2. 인트로 화면을 종료하고 신청서로 진입하는 함수
     function skipIntro() {
         if (isIntroCleared) return;
         isIntroCleared = true;
         
         clearTimeout(introTimer);
-
-        const bgm = document.getElementById('bgm');
-        const targetVolume = 0.1; // 🎧 메인 페이지에서 들릴 은은한 볼륨
-
-        // --- 🎵 서서히 볼륨을 낮춰 메인 볼륨으로 고정 ---
-        const fadeOutInterval = setInterval(() => {
-            if (bgm.volume > targetVolume + 0.05) { 
-                bgm.volume -= 0.05;  // 서서히 작아짐
-            } else {
-                bgm.volume = targetVolume; // 최종적으로 타겟 볼륨으로 고정
-                clearInterval(fadeOutInterval);
-            }
-        }, 100); 
-
-        const intro = document.getElementById('intro-overlay');
-        const container = document.getElementById('mainContainer');
-        
-        intro.classList.remove('show');
-        intro.classList.add('fade-out');
-        container.classList.add('show');
-    }
 
         const intro = document.getElementById('intro-overlay');
         const container = document.getElementById('mainContainer');
