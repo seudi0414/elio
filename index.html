@@ -7,7 +7,7 @@
 
     <!-- 카카오톡 미리보기 (오픈 그래프) 설정 -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://내-깃허브-주소.github.io/"> 
+    <meta property="og:url" content="https://seudi0414.github.io/elio/"> 
     <meta property="og:title" content="👑 ELIO CLAN - 공식 가입 신청서"> 
     <meta property="og:description" content="늘 즐거운, 엘리오 클랜의 일원이 되어주세요."> 
     <meta property="og:image" content="eliohf.jpg"> 
@@ -33,7 +33,60 @@
             overflow-x: hidden;
         }
 
-        /* 🎬 인트로 화면 스타일 */
+        /* 🚪 1. 접속 시 가장 먼저 뜨는 게이트 화면 */
+        #gate-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0d0d0c;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000; /* 가장 위에 배치 */
+            transition: opacity 1s ease, visibility 1s ease;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .gate-title {
+            color: #ffffff;
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        }
+
+        .gate-subtitle {
+            color: #bfa365;
+            font-size: 14px;
+            margin-bottom: 40px;
+            font-weight: 500;
+        }
+
+        .gate-btn {
+            background: linear-gradient(135deg, #f1cc64 0%, #c6942b 50%, #b2801b 100%);
+            color: #fff;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(198, 148, 43, 0.6);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .gate-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 45px rgba(198, 148, 43, 0.9);
+        }
+
+        /* 🎬 2. 음악과 함께 7초 동안 보일 인트로 화면 */
         #intro-overlay {
             position: fixed;
             top: 0;
@@ -45,7 +98,14 @@
             justify-content: center;
             align-items: center;
             z-index: 9999; 
+            opacity: 0;
+            visibility: hidden;
             transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.2s ease;
+        }
+
+        #intro-overlay.show {
+            opacity: 1;
+            visibility: visible;
         }
 
         #intro-overlay img {
@@ -60,33 +120,38 @@
             position: absolute;
             bottom: 30px;
             right: 30px;
-            background: linear-gradient(135deg, #f1cc64 0%, #c6942b 100%);
-            color: #fff;
-            border: none;
-            padding: 12px 26px;
+            background: rgba(212, 175, 55, 0.15);
+            color: #f1cc64;
+            border: 1px solid #c6942b;
+            padding: 10px 20px;
             border-radius: 30px;
             cursor: pointer;
-            font-weight: 700;
-            font-size: 15px;
+            font-weight: 600;
+            font-size: 13px;
             letter-spacing: 1px;
-            box-shadow: 0 0 20px rgba(198, 148, 43, 0.6);
             transition: all 0.3s ease;
-            animation: pulse 2s infinite; /* 버튼 눈에 띄게 깜빡이는 효과 */
+            backdrop-filter: blur(5px);
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 0 20px rgba(198, 148, 43, 0.6); }
-            50% { transform: scale(1.05); box-shadow: 0 0 35px rgba(198, 148, 43, 0.9); }
-            100% { transform: scale(1); box-shadow: 0 0 20px rgba(198, 148, 43, 0.6); }
+        .skip-btn:hover {
+            background: linear-gradient(135deg, #f1cc64 0%, #c6942b 100%);
+            color: #fff;
         }
 
-        #intro-overlay.fade-out {
-            opacity: 0;
-            visibility: hidden;
+        /* 서서히 가라앉는 페이드 아웃 효과 */
+        .fade-out {
+            opacity: 0 !important;
+            visibility: hidden !important;
             pointer-events: none;
         }
 
-        /* 메인 컨테이너 */
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 20px rgba(198, 148, 43, 0.5); }
+            50% { transform: scale(1.04); box-shadow: 0 0 35px rgba(198, 148, 43, 0.8); }
+            100% { transform: scale(1); box-shadow: 0 0 20px rgba(198, 148, 43, 0.5); }
+        }
+
+        /* 📋 메인 컨테이너 */
         .container {
             width: 100%;
             max-width: 550px;
@@ -330,16 +395,23 @@
 </head>
 <body>
 
-<!-- 🎵 오디오 재생 태그 (반복 재생 설정) -->
-<audio id="bgm" src="bgm.mp3" loop bgm.volume = 0.25;></audio>
+<!-- 🎵 오디오 재생 태그 -->
+<audio id="bgm" src="bgm.mp3" loop></audio>
 
-<!-- 🎬 1. 인트로 오프닝 레이어 영역 -->
-<div id="intro-overlay">
-    <img src="elio.gif" alt="ELIO CLAN INTRO">
-    <!-- 음악 시작을 위한 강렬한 입장 버튼 디자인 변경 -->
-    <button class="skip-btn" onclick="skipIntro()">가입 신청하기(Skip)</button>
+<!-- 🚪 1. 제일 먼저 뜨는 게이트 화면 (여기서 유저가 클릭하면 음악 스타트!) -->
+<div id="gate-overlay">
+    <div class="gate-title">👑 ELIO CLAN</div>
+    <div class="gate-subtitle">공식 가입 신청 시스템</div>
+    <button class="gate-btn" onclick="startEverything()">가입 신청서 입장하기 (SOUND ON 🔊)</button>
 </div>
 
+<!-- 🎬 2. 음악과 함께 연출되는 황금 로고 인트로 화면 -->
+<div id="intro-overlay">
+    <img src="elio_2.jpg" alt="ELIO CLAN INTRO">
+    <button class="skip-btn" onclick="skipIntro()">인트로 건너뛰기 ⏭️</button>
+</div>
+
+<!-- 📋 3. 메인 가입 신청서 내용 -->
 <div class="container" id="mainContainer">
     <div class="header">
         <h1>ELIO CLAN</h1>
@@ -493,40 +565,41 @@
     let introTimer;
     let isIntroCleared = false;
 
-    // 🎬 인트로 종료 및 음악 재생 함수
+    // 🚪 1. 첫 번째 게이트 버튼을 누르면 작동하는 함수
+    function startEverything() {
+        // 첫 관문 게이트 지우기
+        const gate = document.getElementById('gate-overlay');
+        gate.classList.add('fade-out');
+
+        // 🎵 음악 볼륨 20%로 재생 시작 (유저가 클릭했으므로 100% 무조건 켜짐!)
+        const bgm = document.getElementById('bgm');
+        bgm.volume = 0.2; 
+        bgm.play().catch(err => console.log(err));
+
+        // 인트로 로고 화면 띄우기
+        const intro = document.getElementById('intro-overlay');
+        intro.classList.add('show');
+
+        // ⏳ 인트로 띄운 시점부터 딱 '7초' 뒤에 자동으로 메인 신청서로 넘김
+        introTimer = setTimeout(skipIntro, 7000);
+    }
+
+    // 🎬 2. 인트로 화면을 종료하고 신청서로 진입하는 함수
     function skipIntro() {
         if (isIntroCleared) return;
         isIntroCleared = true;
         
         clearTimeout(introTimer);
-        
-        const bgm = document.getElementById('bgm');
-        bgm.volume = 0.2; // 🎚️ 볼륨은 기본 20%로 세팅해두었습니다.
-
-        // 🎵 음악 재생 시도
-        bgm.play().catch(error => {
-            console.log("브라우저 정책으로 자동 재생이 차단되었습니다. 화면을 클릭하면 재생됩니다.");
-            
-            // 💡 만약 버튼을 안 눌러서 재생이 차단되었다면, 유저가 화면 아무데나 첫 클릭을 하는 순간 음악이 켜지도록 대기시킵니다.
-            document.body.addEventListener('click', function startBgmOnFirstClick() {
-                bgm.play();
-                // 한 번 켜진 후에는 중복 실행되지 않도록 클릭 이벤트 제거
-                document.body.removeEventListener('click', startBgmOnFirstClick); 
-            }, { once: true });
-        });
 
         const intro = document.getElementById('intro-overlay');
         const container = document.getElementById('mainContainer');
+        
+        intro.classList.remove('show');
         intro.classList.add('fade-out');
         container.classList.add('show');
     }
 
-    // ⏳ 7초 동안 버튼을 안 누르면 자동으로 인트로가 넘어가며 음악 재생을 시도합니다.
-    window.addEventListener('DOMContentLoaded', () => {
-        introTimer = setTimeout(skipIntro, 7000); 
-    });
-
-    // --- 아래는 기존 기능(페이지 제어 및 디스코드 전송)과 동일합니다 ---
+    // --- 밑에는 기존의 가입 양식 제어 및 웹훅 연동 스크립트입니다 ---
     const formSteps = document.querySelectorAll(".form-step");
     const stepDots = document.querySelectorAll(".step-dot");
     const progressBar = document.getElementById("progress");
@@ -615,3 +688,4 @@
     }
 </script>
 </body>
+</html>
