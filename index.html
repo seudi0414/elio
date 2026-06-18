@@ -493,17 +493,26 @@
     let introTimer;
     let isIntroCleared = false;
 
-    // 🎬 인트로 종료 및 음악 강제 재생 함수
+    // 🎬 인트로 종료 및 음악 재생 함수
     function skipIntro() {
         if (isIntroCleared) return;
         isIntroCleared = true;
         
         clearTimeout(introTimer);
         
-        // 🎵 유저 클릭 상호작용이 일어났으므로 음악 재생 시작
         const bgm = document.getElementById('bgm');
+        bgm.volume = 0.2; // 🎚️ 볼륨은 기본 20%로 세팅해두었습니다.
+
+        // 🎵 음악 재생 시도
         bgm.play().catch(error => {
-            console.log("브라우저 자동재생 차단 정책으로 인해 재생이 차단되었습니다. 유저 액션이 더 필요합니다.", error);
+            console.log("브라우저 정책으로 자동 재생이 차단되었습니다. 화면을 클릭하면 재생됩니다.");
+            
+            // 💡 만약 버튼을 안 눌러서 재생이 차단되었다면, 유저가 화면 아무데나 첫 클릭을 하는 순간 음악이 켜지도록 대기시킵니다.
+            document.body.addEventListener('click', function startBgmOnFirstClick() {
+                bgm.play();
+                // 한 번 켜진 후에는 중복 실행되지 않도록 클릭 이벤트 제거
+                document.body.removeEventListener('click', startBgmOnFirstClick); 
+            }, { once: true });
         });
 
         const intro = document.getElementById('intro-overlay');
@@ -512,11 +521,12 @@
         container.classList.add('show');
     }
 
-    // 시간 초과 시에도 자동으로 넘어가도록 설정 (음악은 브라우저 정책상 오토플레이가 막힐 수 있어 가급적 클릭 유도)
+    // ⏳ 7초 동안 버튼을 안 누르면 자동으로 인트로가 넘어가며 음악 재생을 시도합니다.
     window.addEventListener('DOMContentLoaded', () => {
         introTimer = setTimeout(skipIntro, 7000); 
     });
 
+    // --- 아래는 기존 기능(페이지 제어 및 디스코드 전송)과 동일합니다 ---
     const formSteps = document.querySelectorAll(".form-step");
     const stepDots = document.querySelectorAll(".step-dot");
     const progressBar = document.getElementById("progress");
@@ -605,4 +615,3 @@
     }
 </script>
 </body>
-</html>
