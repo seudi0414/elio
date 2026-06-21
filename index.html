@@ -481,9 +481,10 @@
                 <input type="text" id="gametime" placeholder="예: 평일 저녁 8시 ~ 새벽 1시 / 주말 풀접" required>
             </div>
 
-              <div class="input-group">
+             <div class="input-group">
                 <label>주간 접속 횟수</label>
-                <input type="text" id="gametime" placeholder="예: 주 3~4일" required>
+                <!-- 💡 중복 ID 해결: gametime -> gameweek -->
+                <input type="text" id="gameweek" placeholder="예: 주 3~4일" required>
             </div>
 
             <div class="btn-container">
@@ -551,7 +552,7 @@
                 <h2>👑 가입 신청 완료!</h2>
                 <p>
                     엘리오 클랜 가입 신청서가<br>
-                    성공적으로 발송되었습니다.<br>
+                    성적으로 발송되었습니다.<br>
                     원활한 승인 가입 심사를 위해 아래 버튼을 눌러<br>
                     <strong>ELIO 공식 디스코드 채널</strong>에 꼭 입장해 주세요!<br>
                     디코 클모방 채널에서 진행 도와드릴게요!
@@ -641,20 +642,20 @@
         event.preventDefault();
 
         const webhookUrl = "https://discord.com/api/webhooks/1516303098421710921/bpqvQewa-kLt61OTlixvR0ECLHuMlZVWp4Kcy0IaI62rBtoUJMmMy36p0sbmy8MFaKaL";
-        const discordInviteUrl = "https://discord.com/api/webhooks/1516303098421710921/bpqvQewa-kLt61OTlixvR0ECLHuMlZVWp4Kcy0IaI62rBtoUJMmMy36p0sbmy8MFaKaL";
         
-
         const username = document.getElementById("username").value;
         const userage = document.getElementById("userage").value;
         const usergender = document.getElementById("usergender").value;
         const mainweapon = document.getElementById("mainweapon").value;
         const gametime = document.getElementById("gametime").value;
+        const gameweek = document.getElementById("gameweek").value; // 💡 분리된 id 값 수집
         const mic = document.getElementById("mic").value;
         const connection = document.getElementById("connection").value;
         const leave_reason = document.getElementById("leave_reason").value;
         const barracks_link = document.getElementById("barracks_link").value;
         const final_message = document.getElementById("final_message").value;
 
+        // 💡 문법 오류 전면 수정 및 가독성 패치 완료
         const requestData = {
             username: "ELIO 신청 알리미",
             embeds: [{
@@ -664,7 +665,7 @@
                 timestamp: new Date().toISOString(),
                 fields: [
                     { name: "👤 1단계: 기본 인적사항", value: `• **닉네임:** ${username}\n• **나이:** ${userage}세\n• **성별:** ${usergender}`, inline: false },
-                    { name: "🎮 2단계: 게임 플레이 정보", value: `• **주총:** ${mainweapon}\n• **접속 시간대:** ${gametime}`, inline: false }
+                    { name: "🎮 2단계: 게임 플레이 정보", value: `• **주총:** ${mainweapon}\n• **접속 시간대:** ${gametime}\n• **주간 횟수:** ${gameweek}`, inline: false },
                     { name: "💬 3단계: 소통 및 인맥", value: `• **마이크 가능 여부:** ${mic}\n• **클랜 인맥:** ${connection}`, inline: false },
                     { name: "📋 4단계: 클랜 전적 및 인증", value: `• **전 클랜 탈퇴사유:** ${leave_reason}\n• **병영수첩:** [바로가기 링크](${barracks_link})`, inline: false },
                     { name: "📝 5단계: 가입 전 하고 싶은 말", value: `\`\`\`\n${final_message}\n\`\`\``, inline: false }
